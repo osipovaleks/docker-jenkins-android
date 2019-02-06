@@ -10,8 +10,7 @@ install:
   - docker build -t osipovaleks/docker-jenkins-android .
   - docker run -it -d --rm --name jenkins osipovaleks/docker-jenkins-android
 
-after_install:
-  - chmod +x ./travisTest.sh
 
 script:
+  - chmod +x ./travisTest.sh
   - ./travisTest.sh
