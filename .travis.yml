@@ -8,7 +8,7 @@ services:
 
 install:
   - docker build -t osipovaleks/docker-jenkins-android .
-  - docker run -it --rm --name jenkins osipovaleks/docker-jenkins-android
+  - docker run -it -d --rm --name jenkins osipovaleks/docker-jenkins-android
 
 
 script:
