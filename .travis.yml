@@ -1,0 +1,14 @@
+sudo: required
+
+language: bash
+
+services:
+  - docker
+
+
+install:
+  - docker build -t osipovaleks/docker-jenkins-android .
+
+
+script:
+  - docker run -it --rm osipovaleks/docker-jenkins-android
