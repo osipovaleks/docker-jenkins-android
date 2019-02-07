@@ -1,9 +1,9 @@
 #!/bin/sh
 
 echo "Start TravisTest.sh"
-echo "Waiting 30 second for starting Jenkins"
+echo "Waiting 60 second for starting Jenkins"
 
-sleep 30
+sleep 60
 
 echo "Check logs"
 
