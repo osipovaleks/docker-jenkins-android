@@ -17,7 +17,7 @@ RUN apt-get update && apt-get install -y git \
  sudo \
  tzdata \
  locales\
- openjdk-8-jdk-headless \
+ openjdk-8-jdk \
  libncurses5:i386 \
  libstdc++6:i386 \
  zlib1g:i386
