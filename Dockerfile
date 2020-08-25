@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 LABEL author="osipovaleks"
 LABEL maintainer="osipov.aleks.kr@gmail.com"
-LABEL version="1.0"
+LABEL version="1.1"
 LABEL description="Docker image for Jenkins with Android SDK"
 
 #set timezone
