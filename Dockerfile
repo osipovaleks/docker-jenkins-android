@@ -10,18 +10,11 @@ ENV TZ=Europe/Kiev
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 #install
-RUN dpkg --add-architecture i386 
-RUN apt-get update && apt-get install -y git \
- wget \
- unzip \
- sudo \
- tzdata \
- locales\
- openjdk-8-jdk \
- libncurses5:i386 \
- libstdc++6:i386 \
- zlib1g:i386
-RUN apt-get clean && rm -rf /var/lib/apt/lists /var/cache/apt
+RUN dpkg --add-architecture i386
+RUN apt-get update && apt-get install -y\
+ git wget unzip sudo mc tzdata locales openjdk-8-jdk libncurses5:i386 libstdc++6:i386 zlib1g:i386 net-tools\
+ && apt-get clean\
+ && rm -rf /var/lib/apt/lists /var/cache/apt
 
 #set locale
 RUN locale-gen en_US.UTF-8  
