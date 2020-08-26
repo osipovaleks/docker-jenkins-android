@@ -1,21 +1,13 @@
 #!/bin/sh
 
 echo "Start TravisTest.sh"
-echo "Waiting 60 second for starting Jenkins"
+echo "Waiting 20 second for starting Jenkins"
 
-sleep 60
+sleep 20
 
-echo "Check logs"
+running=$(docker container inspect -f '{{.State.Running}}' jenkins)
 
-expected="Jenkins is fully up and running"
-actual=`docker logs --tail "1" jenkins`
-#remove last spec symbol
-actual=$(echo $actual|tr -d '\r')
-
-echo "Expecting: $expected"
-echo "Container says: $actual"
-
-if [[$actual == *"$expected"*]]; then
+if [ $running == "true" ]; then
   echo "Test passed"
   exit 0
 else
