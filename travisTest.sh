@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 echo "Start TravisTest.sh"
 echo "Waiting 20 second for starting Jenkins"
