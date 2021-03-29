@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL author="osipovaleks"
 LABEL maintainer="osipov.aleks.kr@gmail.com"
@@ -24,19 +24,19 @@ ENV LC_ALL en_US.UTF-8
 
 #download android sdk
 ARG android_home_dir=/var/lib/android-sdk/
-ARG sdk_tools_zip_file=sdk-tools-linux-4333796.zip
+ARG sdk_tools_zip_file=commandlinetools-linux-6858069_latest.zip
 RUN mkdir $android_home_dir
 RUN wget https://dl.google.com/android/repository/$sdk_tools_zip_file -P $android_home_dir -nv
 RUN unzip $android_home_dir$sdk_tools_zip_file -d $android_home_dir
 RUN rm $android_home_dir$sdk_tools_zip_file && chmod 777 -R $android_home_dir
 
 #setup environment
-ENV ANDROID_HOME=$android_home_dir
-ENV PATH="${PATH}:$android_home_dir/tools/bin:$android_home_dir/platform-tools"
+ENV ANDROID_SDK_ROOT=$android_home_dir
+ENV PATH="${PATH}:$android_home_dir/cmdline-tools/bin:$android_home_dir/platform-tools"
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
 #android sdk license agreement
-RUN yes | sdkmanager --licenses
+RUN yes | sdkmanager --licenses --sdk_root=$android_home_dir && sdkmanager "platform-tools" --sdk_root=$android_home_dir
 
 #setup jenkins home dir
 ENV JENKINS_HOME=/var/lib/jenkins
@@ -46,6 +46,9 @@ RUN mkdir $JENKINS_HOME && chmod 777 $JENKINS_HOME
 RUN useradd -m jenkins && echo 'jenkins ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER jenkins
 WORKDIR /home/jenkins
+
+#generate adb key
+RUN mkdir .android && adb keygen .android/adbkey
 
 #downloading and running jenkins
 RUN wget http://mirrors.jenkins.io/war-stable/latest/jenkins.war -nv
