@@ -23,20 +23,20 @@ ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8 
 
 #download android sdk
-ARG android_home_dir=/var/lib/android-sdk/
+ARG android_home_dir=/var/lib/android-sdk
 ARG sdk_tools_zip_file=commandlinetools-linux-6858069_latest.zip
 RUN mkdir $android_home_dir
 RUN wget https://dl.google.com/android/repository/$sdk_tools_zip_file -P $android_home_dir -nv
-RUN unzip $android_home_dir$sdk_tools_zip_file -d $android_home_dir
-RUN rm $android_home_dir$sdk_tools_zip_file && chmod 777 -R $android_home_dir
+RUN unzip "$android_home_dir/$sdk_tools_zip_file" -d "$android_home_dir/cmdline-tools"
+RUN rm "$android_home_dir/$sdk_tools_zip_file" &&  mv "$android_home_dir/cmdline-tools/cmdline-tools" "$android_home_dir/cmdline-tools/tools"
 
 #setup environment
 ENV ANDROID_SDK_ROOT=$android_home_dir
-ENV PATH="${PATH}:$android_home_dir/cmdline-tools/bin:$android_home_dir/platform-tools"
+ENV PATH="${PATH}:$android_home_dir/cmdline-tools/tools/bin:$android_home_dir/platform-tools"
 ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/
 
 #android sdk license agreement
-RUN yes | sdkmanager --licenses --sdk_root=$android_home_dir && sdkmanager "platform-tools" --sdk_root=$android_home_dir
+RUN yes | sdkmanager --licenses && sdkmanager "platform-tools"
 
 #setup jenkins home dir
 ENV JENKINS_HOME=/var/lib/jenkins
@@ -46,6 +46,9 @@ RUN mkdir $JENKINS_HOME && chmod 777 $JENKINS_HOME
 RUN useradd -m jenkins && echo 'jenkins ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 USER jenkins
 WORKDIR /home/jenkins
+
+#set chmod for android sdk dir
+RUN sudo chmod 777 -R "$android_home_dir/"
 
 #generate adb key
 RUN mkdir .android && adb keygen .android/adbkey
