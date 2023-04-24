@@ -12,7 +12,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 #install
 RUN dpkg --add-architecture i386
 RUN apt-get update && apt-get install -y\
- git wget unzip sudo mc tzdata locales openjdk-11-jdk libncurses5:i386 libstdc++6:i386 zlib1g:i386 net-tools nano curl awscli\
+ git wget unzip sudo mc tzdata locales openjdk-17-jdk libncurses5:i386 libstdc++6:i386 zlib1g:i386 net-tools nano curl awscli\
  && apt-get clean\
  && rm -rf /var/lib/apt/lists /var/cache/apt
 
@@ -24,7 +24,7 @@ ENV LC_ALL en_US.UTF-8
 
 #download android sdk
 ARG android_home_dir=/var/lib/android-sdk/
-ARG commandlinetools_zip_file=commandlinetools-linux-7583922_latest.zip
+ARG commandlinetools_zip_file=commandlinetools-linux-9477386_latest.zip
 RUN mkdir $android_home_dir
 RUN wget https://dl.google.com/android/repository/$commandlinetools_zip_file -P $android_home_dir -nv
 RUN unzip $android_home_dir$commandlinetools_zip_file -d $android_home_dir/cmdline-tools
@@ -35,7 +35,7 @@ RUN rm $android_home_dir$commandlinetools_zip_file\
 #setup environment
 ENV ANDROID_SDK_ROOT=$android_home_dir
 ENV PATH="${PATH}:$android_home_dir/cmdline-tools/tools/bin:$android_home_dir/platform-tools"
-ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64/
+ENV JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64/
 
 #android sdk license agreement
 RUN yes | sdkmanager --licenses && sdkmanager "platform-tools"
